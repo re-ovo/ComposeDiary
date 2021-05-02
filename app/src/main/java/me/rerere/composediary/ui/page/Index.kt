@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
+import com.google.accompanist.insets.statusBarsPadding
 import me.rerere.composediary.ComposeDiaryApp
 import me.rerere.composediary.DiaryViewModel
 import me.rerere.composediary.DiaryViewModelFactory
@@ -55,17 +56,28 @@ fun Index(navController: NavController) {
             )
         }
     ) {
+        val expandIndex: MutableState<Int> = remember {
+            mutableStateOf(0)
+        }
         LazyColumn {
             items(diaryList) { diary ->
-                DiaryCard(diary, diaryViewModel, navController)
+                DiaryCard(diary, diaryViewModel, navController, expandIndex )
             }
         }
     }
 }
 
 @Composable
-fun DiaryCard(diary: Diary, diaryViewModel: DiaryViewModel, navController: NavController) {
+fun DiaryCard(diary: Diary, diaryViewModel: DiaryViewModel, navController: NavController, expandIndex: MutableState<Int>) {
     var expand by remember { mutableStateOf(false) }
+
+    // 实现展开互斥操作
+    LaunchedEffect(expandIndex.value){
+        if(expand && expandIndex.value != diary.id){
+            expand = false
+        }
+    }
+
     Card(
         elevation = 4.dp,
         shape = RoundedCornerShape(4.dp),
@@ -73,7 +85,12 @@ fun DiaryCard(diary: Diary, diaryViewModel: DiaryViewModel, navController: NavCo
             .animateContentSize()
             .padding(8.dp)
             .fillMaxWidth()
-            .clickable { expand = !expand }
+            .clickable {
+                expand = !expand
+                if(expand) {
+                    expandIndex.value = diary.id
+                }
+            }
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(diary.content)
