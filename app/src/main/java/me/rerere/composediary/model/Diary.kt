@@ -1,4 +1,4 @@
-package me.rererecomposediary.model
+package me.rerere.composediary.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

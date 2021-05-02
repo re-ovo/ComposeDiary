@@ -1,8 +1,8 @@
-package me.rererecomposediary.repo
+package me.rerere.composediary.repo
 
 import kotlinx.coroutines.flow.Flow
-import me.rererecomposediary.dao.DiaryDao
-import me.rererecomposediary.model.Diary
+import me.rerere.composediary.dao.DiaryDao
+import me.rerere.composediary.model.Diary
 
 class DiaryRepo(private val diaryDao: DiaryDao) {
     val allDiary: Flow<List<Diary>> = diaryDao.getAll()

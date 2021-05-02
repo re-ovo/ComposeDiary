@@ -1,4 +1,4 @@
-package me.rererecomposediary.ui
+package me.rerere.composediary.ui
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
@@ -20,11 +20,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
-import me.rererecomposediary.ComposeDiaryApp
-import me.rererecomposediary.DiaryViewModel
-import me.rererecomposediary.DiaryViewModelFactory
-import me.rererecomposediary.R
-import me.rererecomposediary.model.Diary
+import me.rerere.composediary.ComposeDiaryApp
+import me.rerere.composediary.DiaryViewModel
+import me.rerere.composediary.DiaryViewModelFactory
+import me.rerere.composediary.R
+import me.rerere.composediary.model.Diary
 import java.text.DateFormat
 import java.util.*
 

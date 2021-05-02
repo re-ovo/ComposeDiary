@@ -1,4 +1,4 @@
-package me.rererecomposediary.ui
+package me.rerere.composediary.ui
 
 import androidx.compose.runtime.Composable
 

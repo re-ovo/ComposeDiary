@@ -1,4 +1,4 @@
-package me.rererecomposediary.ui.theme
+package me.rerere.composediary.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

@@ -1,4 +1,4 @@
-package me.rererecomposediary
+package me.rerere.composediary
 
 import org.junit.Test
 

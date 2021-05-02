@@ -1,9 +1,9 @@
-package me.rererecomposediary.database
+package me.rerere.composediary.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import me.rererecomposediary.dao.DiaryDao
-import me.rererecomposediary.model.Diary
+import me.rerere.composediary.dao.DiaryDao
+import me.rerere.composediary.model.Diary
 
 @Database(entities = [Diary::class], version = 1, exportSchema = false)
 abstract class DiaryDB : RoomDatabase() {

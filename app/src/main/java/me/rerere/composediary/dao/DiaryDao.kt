@@ -1,8 +1,8 @@
-package me.rererecomposediary.dao
+package me.rerere.composediary.dao
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
-import me.rererecomposediary.model.Diary
+import me.rerere.composediary.model.Diary
 
 @Dao
 interface DiaryDao {

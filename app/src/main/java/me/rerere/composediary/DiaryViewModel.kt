@@ -1,9 +1,9 @@
-package me.rererecomposediary
+package me.rerere.composediary
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
-import me.rererecomposediary.model.Diary
-import me.rererecomposediary.repo.DiaryRepo
+import me.rerere.composediary.model.Diary
+import me.rerere.composediary.repo.DiaryRepo
 
 class DiaryViewModel(private val diaryRepo: DiaryRepo) : ViewModel() {
     val diaryList : LiveData<List<Diary>> = diaryRepo.allDiary.asLiveData()

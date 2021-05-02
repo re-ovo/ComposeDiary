@@ -1,11 +1,9 @@
-package me.rererecomposediary
+package me.rerere.composediary
 
 import android.app.Application
 import androidx.room.Room
-import androidx.room.RoomDatabase
-import me.rererecomposediary.dao.DiaryDao
-import me.rererecomposediary.database.DiaryDB
-import me.rererecomposediary.repo.DiaryRepo
+import me.rerere.composediary.database.DiaryDB
+import me.rerere.composediary.repo.DiaryRepo
 
 class ComposeDiaryApp : Application() {
     companion object {
