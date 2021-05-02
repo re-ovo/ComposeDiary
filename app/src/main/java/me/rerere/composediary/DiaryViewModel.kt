@@ -1,7 +1,8 @@
 package me.rerere.composediary
 
-import androidx.compose.runtime.*
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -11,6 +12,7 @@ import me.rerere.composediary.repo.DiaryRepo
 class DiaryViewModel(private val diaryRepo: DiaryRepo) : ViewModel() {
     // 日记列表
     val diaryList: LiveData<List<Diary>> = diaryRepo.allDiary.asLiveData()
+
     // 当前正在编辑的日记
     var currentEditing by mutableStateOf(Diary(-1, ""))
 
@@ -31,7 +33,7 @@ class DiaryViewModel(private val diaryRepo: DiaryRepo) : ViewModel() {
         when (id) {
             // -1: 新建日记
             -1 -> {
-                val diary = Diary(0,"")
+                val diary = Diary(0, "")
                 insert(diary)
                 currentEditing = diary
             }
