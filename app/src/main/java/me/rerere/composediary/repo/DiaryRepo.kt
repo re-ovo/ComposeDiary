@@ -14,4 +14,6 @@ class DiaryRepo(private val diaryDao: DiaryDao) {
     suspend fun update(diary: Diary) = diaryDao.update(diary)
 
     suspend fun delete(diary: Diary) = diaryDao.delete(diary)
+
+    suspend fun deleteAll() = diaryDao.deleteAll()
 }

@@ -41,7 +41,16 @@ fun Index(navController: NavController) {
                 title = { Text(text = stringResource(R.string.app_name)) },
                 actions = {
                     Row {
-                        IconButton(onClick = { diaryViewModel.insert(Diary(0, "你写个锤子的日记")) }) {
+                        IconButton(onClick = {
+                            diaryViewModel.deleteAll()
+                        }) {
+                            Icon(
+                                Icons.Default.DeleteForever, "Delete All"
+                            )
+                        }
+                        IconButton(onClick = {
+                            navController.navigate("edit")
+                        }) {
                             Icon(
                                 Icons.Default.Add, "Create a diary"
                             )
@@ -103,7 +112,7 @@ fun DiaryCard(diary: Diary, diaryViewModel: DiaryViewModel, navController: NavCo
                         IconButton(modifier = Modifier
                             .padding(8.dp)
                             .size(25.dp), onClick = {
-                            navController.navigate("edit/${diary.id}")
+                            navController.navigate("edit?id=${diary.id}")
                         }) {
                             Icon(Icons.Default.Edit, "Edit the diary")
                         }
@@ -119,7 +128,7 @@ fun DiaryCard(diary: Diary, diaryViewModel: DiaryViewModel, navController: NavCo
                                 ComposeDiaryApp.appContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                             clipboard.setPrimaryClip(ClipData.newPlainText(null, diary.content))
                         }) {
-                            Icon(Icons.Default.CopyAll, "Delete the diary")
+                            Icon(Icons.Default.CopyAll, "Copy the diary")
                         }
                     }
                 }
