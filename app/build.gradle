@@ -54,6 +54,13 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.3.0-alpha07'
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
 
+    // 状态栏颜色
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.8.1"
+    implementation "com.google.accompanist:accompanist-insets:0.8.1"
+
+    // 图标
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+
     // Lifecycle - KTX
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-alpha01'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'

@@ -1,5 +1,8 @@
-package me.rerere.composediary.ui
+package me.rerere.composediary.ui.page
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -8,10 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -76,10 +76,7 @@ fun DiaryCard(diary: Diary, diaryViewModel: DiaryViewModel, navController: NavCo
             .clickable { expand = !expand }
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            var content by remember {
-                mutableStateOf(diary.content)
-            }
-            Text(content)
+            Text(diary.content)
             Column {
                 CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.disabled) {
                     Text(text = "日期: ${DateFormat.getDateInstance().format(Date(diary.date))}")
@@ -91,12 +88,21 @@ fun DiaryCard(diary: Diary, diaryViewModel: DiaryViewModel, navController: NavCo
                             .size(25.dp), onClick = {
                             navController.navigate("edit/${diary.id}")
                         }) {
-                            Icon(Icons.Default.Edit,"Edit the diary")
+                            Icon(Icons.Default.Edit, "Edit the diary")
                         }
                         IconButton(modifier = Modifier
                             .padding(8.dp)
-                            .size(25.dp), onClick = { diaryViewModel.delete(diary)}) {
-                            Icon(Icons.Default.Delete,"Delete the diary")
+                            .size(25.dp), onClick = { diaryViewModel.delete(diary) }) {
+                            Icon(Icons.Default.Delete, "Delete the diary")
+                        }
+                        IconButton(modifier = Modifier
+                            .padding(8.dp)
+                            .size(25.dp), onClick = {
+                            val clipboard: ClipboardManager =
+                                ComposeDiaryApp.appContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                            clipboard.setPrimaryClip(ClipData.newPlainText(null, diary.content))
+                        }) {
+                            Icon(Icons.Default.CopyAll, "Delete the diary")
                         }
                     }
                 }

@@ -7,6 +7,8 @@ import me.rerere.composediary.model.Diary
 class DiaryRepo(private val diaryDao: DiaryDao) {
     val allDiary: Flow<List<Diary>> = diaryDao.getAll()
 
+    suspend fun getDiaryById(id: Int): Diary = diaryDao.getDiaryByID(id)
+
     suspend fun insertDiary(diary: Diary) = diaryDao.insert(diary)
 
     suspend fun update(diary: Diary) = diaryDao.update(diary)
