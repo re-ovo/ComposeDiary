@@ -54,6 +54,9 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.3.0-alpha07'
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
 
+    // 动画库
+    implementation "com.github.fornewid:material-motion-compose:0.4.4"
+
     // 状态栏颜色
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.8.1"
     implementation "com.google.accompanist:accompanist-insets:0.8.1"

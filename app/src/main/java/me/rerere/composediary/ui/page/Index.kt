@@ -45,7 +45,7 @@ import java.util.concurrent.TimeUnit
 
 @ExperimentalFoundationApi
 @Composable
-fun      Index(navController: NavController, diaryViewModel: DiaryViewModel) {
+fun Index(navController: NavController, diaryViewModel: DiaryViewModel) {
     val diaryList: List<Diary> by diaryViewModel.diaryList.observeAsState(emptyList())
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
@@ -58,11 +58,16 @@ fun      Index(navController: NavController, diaryViewModel: DiaryViewModel) {
                 actions = {
                     Row {
 
-                        // add test data
+                        /* 测试按钮，用于批量创建测试数据
+
                         IconButton(onClick = {
-                            repeat(10){
+                            repeat(10) {
                                 diaryViewModel.insert(
-                                    Diary(0,"哈哈哈哈", System.currentTimeMillis() - (TimeUnit.DAYS.toMillis(it.toLong())))
+                                    Diary(
+                                        0,
+                                        "哈哈哈哈",
+                                        System.currentTimeMillis() - (TimeUnit.DAYS.toMillis(it.toLong()))
+                                    )
                                 )
                             }
                         }) {
@@ -70,7 +75,9 @@ fun      Index(navController: NavController, diaryViewModel: DiaryViewModel) {
                                 Icons.Default.Add, "Test data"
                             )
                         }
+                         */
 
+                        // 清空所有日记
                         IconButton(onClick = {
                             diaryViewModel.deleteAll()
                         }) {
@@ -78,6 +85,8 @@ fun      Index(navController: NavController, diaryViewModel: DiaryViewModel) {
                                 Icons.Default.DeleteForever, "Delete All"
                             )
                         }
+
+                        // 搜索日记
                         IconButton(onClick = {
                             // Toast.makeText(context, "暂时不支持搜索功能！", Toast.LENGTH_SHORT).show()
                         }) {
@@ -92,33 +101,57 @@ fun      Index(navController: NavController, diaryViewModel: DiaryViewModel) {
                 diaryViewModel.startEditing(-1)// -1 = create a new diary
                 navController.navigate("edit")
             }) {
-                Icon(Icons.Rounded.Add, "Create a diary" )
+                Icon(Icons.Rounded.Add, "Create a diary")
             }
         }
     ) {
         val expandIndex: MutableState<Int> = remember {
             mutableStateOf(0)
         }
-        val grouped = diaryList.groupBy { it.date.formatAsTime() }
-        LazyColumn {
-            grouped.forEach{
-                val (date, daries) = it
-                stickyHeader {
-                    Surface(Modifier.padding(start = 10.dp).fillMaxWidth()) {
-                        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                            Text(text = date, style = TextStyle.Default.copy(color = Color(0xff5ab9e8), fontSize = 15.sp, fontWeight = FontWeight.Bold))
+        if(diaryList.isEmpty()) {
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(text = "点击 \"+\" 新建日记")
+            }
+        } else {
+            val grouped = diaryList.groupBy { it.date.formatAsTime() }
+            LazyColumn {
+                grouped.forEach {
+                    val (date, daries) = it
+                    stickyHeader {
+                        Surface(
+                            Modifier
+                                .padding(start = 10.dp)
+                                .fillMaxWidth()
+                        ) {
+                            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                                Text(
+                                    text = date,
+                                    style = TextStyle.Default.copy(
+                                        color = Color(0xff5ab9e8),
+                                        fontSize = 15.sp,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                )
+                            }
                         }
                     }
+                    items(daries) { diary ->
+                        DiaryCard(
+                            diary,
+                            diaryViewModel,
+                            navController,
+                            expandIndex,
+                            scaffoldState,
+                            scope
+                        )
+                    }
                 }
-                items(daries) { diary ->
-                    DiaryCard(diary, diaryViewModel, navController, expandIndex, scaffoldState, scope)
-                }
-            }
-            /*
+                /*
             items(diaryList) { diary ->
                 DiaryCard(diary, diaryViewModel, navController, expandIndex, scaffoldState, scope)
             }*
              */
+            }
         }
     }
 }
@@ -133,7 +166,7 @@ fun DiaryCard(
     scope: CoroutineScope
 ) {
     var expand by remember { mutableStateOf(false) }
-    val context = LocalContext.current
+    // val context = LocalContext.current
 
     // 实现展开互斥操作
     LaunchedEffect(expandIndex.value) {
@@ -177,7 +210,11 @@ fun DiaryCard(
                             .size(25.dp), onClick = {
                             diaryViewModel.delete(diary)
                             scope.launch {
-                                scaffoldState.snackbarHostState.showSnackbar("已删除日记","关闭", duration = SnackbarDuration.Short)
+                                scaffoldState.snackbarHostState.showSnackbar(
+                                    "已删除日记",
+                                    "关闭",
+                                    duration = SnackbarDuration.Short
+                                )
                             }
                         }) {
                             Icon(Icons.Default.Delete, "Delete the diary")
@@ -190,7 +227,7 @@ fun DiaryCard(
                             clipboard.setPrimaryClip(ClipData.newPlainText(null, diary.content))
                             // Toast.makeText(context, "已复制到剪贴板", Toast.LENGTH_SHORT).show()
                             scope.launch {
-                                scaffoldState.snackbarHostState.showSnackbar("已复制到剪贴板","关闭")
+                                scaffoldState.snackbarHostState.showSnackbar("已复制到剪贴板", "关闭")
                             }
                         }) {
                             Icon(Icons.Default.CopyAll, "Copy the diary")

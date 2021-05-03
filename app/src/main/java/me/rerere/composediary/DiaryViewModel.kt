@@ -63,7 +63,6 @@ class DiaryViewModel(private val diaryRepo: DiaryRepo) : ViewModel() {
 class DiaryViewModelFactory(private val diaryRepo: DiaryRepo) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(DiaryViewModel::class.java)) {
-            println("New viewmodel!")
             return DiaryViewModel(diaryRepo) as T
         }
         error("Unknown view model class: ${modelClass.name}")
