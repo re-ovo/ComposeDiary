@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            ProvideWindowInsets {
+            // ProvideWindowInsets {
                 ComposeDiaryTheme {
                     val navController = rememberNavController()
                     val systemUiController = rememberSystemUiController()
@@ -57,19 +57,12 @@ class MainActivity : ComponentActivity() {
                         }
 
                         // 日记编辑页面
-                        composable("edit?id={id}",
-                            arguments = listOf(
-                                // 日记ID参数，选择要编辑的日记
-                                navArgument("id") {
-                                    type = NavType.IntType
-                                    defaultValue = -1
-                                }
-                            )) {
+                        composable("edit") {
                             EditPage(navController, diaryViewModel)
                         }
                     }
                 }
             }
-        }
+        //}
     }
 }
