@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -23,9 +24,9 @@ import java.time.format.FormatStyle
 @Composable
 fun EditPage(navController: NavController, diaryViewModel: DiaryViewModel) {
     val state = diaryViewModel.currentEditing
-    var content by remember { mutableStateOf(diaryViewModel.currentEditing.content) }
+    var content by rememberSaveable { mutableStateOf("") }
     var date by remember {
-        mutableStateOf(diaryViewModel.currentEditing.date)
+        mutableStateOf(0L)
     }
     // 载入完成后更新content
     LaunchedEffect(state) {
@@ -36,10 +37,10 @@ fun EditPage(navController: NavController, diaryViewModel: DiaryViewModel) {
     // context
     val context = LocalContext.current
 
-    EditUI( content, date,state.id,{
-        if(content.isEmpty()){
+    EditUI(content, date, state.id, {
+        if (content.isEmpty()) {
             Toast.makeText(context, "日记不能为空！", Toast.LENGTH_SHORT).show()
-        }else {
+        } else {
             state.content = content
             diaryViewModel.update(state)
             Toast.makeText(context, "保存完成!", Toast.LENGTH_SHORT).show()
@@ -47,11 +48,12 @@ fun EditPage(navController: NavController, diaryViewModel: DiaryViewModel) {
         }
     }, {
         content = it
+        state.content = content
     })
 }
 
 @Composable
-fun EditUI(content: String,date: Long, id: Int,onSave: () -> Unit, onChange: (String)->Unit) {
+fun EditUI(content: String, date: Long, id: Int, onSave: () -> Unit, onChange: (String) -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(

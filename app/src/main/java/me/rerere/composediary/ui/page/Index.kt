@@ -45,7 +45,7 @@ import java.util.concurrent.TimeUnit
 
 @ExperimentalFoundationApi
 @Composable
-fun Index(navController: NavController, diaryViewModel: DiaryViewModel) {
+fun      Index(navController: NavController, diaryViewModel: DiaryViewModel) {
     val diaryList: List<Diary> by diaryViewModel.diaryList.observeAsState(emptyList())
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
