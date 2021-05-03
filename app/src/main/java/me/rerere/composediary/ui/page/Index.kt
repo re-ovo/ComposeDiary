@@ -30,9 +30,7 @@ import java.text.DateFormat
 import java.util.*
 
 @Composable
-fun Index(navController: NavController) {
-    val diaryViewModel =
-        viewModel<DiaryViewModel>(factory = DiaryViewModelFactory(ComposeDiaryApp.repo))
+fun Index(navController: NavController, diaryViewModel: DiaryViewModel) {
     val diaryList: List<Diary> by diaryViewModel.diaryList.observeAsState(emptyList())
 
     Scaffold(
@@ -49,6 +47,7 @@ fun Index(navController: NavController) {
                             )
                         }
                         IconButton(onClick = {
+                            diaryViewModel.startEditing(-1)// -1 = create a new diary
                             navController.navigate("edit")
                         }) {
                             Icon(
@@ -105,13 +104,14 @@ fun DiaryCard(diary: Diary, diaryViewModel: DiaryViewModel, navController: NavCo
             Text(diary.content)
             Column {
                 CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.disabled) {
-                    Text(text = "日期: ${DateFormat.getDateInstance().format(Date(diary.date))}")
+                    Text(text = "日期: ${DateFormat.getDateInstance().format(Date(diary.date))} ID: ${diary.id}")
                 }
                 if (expand) {
                     Row {
                         IconButton(modifier = Modifier
                             .padding(8.dp)
                             .size(25.dp), onClick = {
+                            diaryViewModel.startEditing(diary.id)
                             navController.navigate("edit?id=${diary.id}")
                         }) {
                             Icon(Icons.Default.Edit, "Edit the diary")

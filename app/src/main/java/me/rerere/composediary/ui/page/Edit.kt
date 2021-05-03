@@ -14,16 +14,12 @@ import androidx.navigation.NavController
 import me.rerere.composediary.ComposeDiaryApp
 import me.rerere.composediary.DiaryViewModel
 import me.rerere.composediary.DiaryViewModelFactory
+import me.rerere.composediary.model.Diary
 
 @Composable
-fun EditPage(navController: NavController, id: Int) {
-    val diaryViewModel = viewModel<DiaryViewModel>(factory = DiaryViewModelFactory(ComposeDiaryApp.repo))
-
-    // Load
-    diaryViewModel.startEditing(id)
-
+fun EditPage(navController: NavController, diaryViewModel: DiaryViewModel) {
     val state = diaryViewModel.currentEditing
-    var content by remember { mutableStateOf("") }
+    var content by remember { mutableStateOf(diaryViewModel.currentEditing.content) }
     // 载入完成后更新content
     LaunchedEffect(state) {
         content = state.content
@@ -31,23 +27,31 @@ fun EditPage(navController: NavController, id: Int) {
 
     // context
     val context = LocalContext.current
+
+    EditUI( content, state.id, {
+        state.content = content
+        diaryViewModel.update(state)
+        Toast.makeText(context, "保存完成!", Toast.LENGTH_SHORT).show()
+        navController.popBackStack()
+    }, {
+        content = it
+    })
+}
+
+@Composable
+fun EditUI(content: String, id: Int,onSave: () -> Unit, onChange: (String)->Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "编辑日记") },
+                title = { Text(text = "编辑日记: $id") },
                 actions = {
-                    IconButton(onClick = {
-                        state.content = content
-                        diaryViewModel.update(state)
-                        Toast.makeText(context, "保存完成!", Toast.LENGTH_SHORT).show()
-                        navController.popBackStack()
-                    }) {
+                    IconButton(onClick = onSave) {
                         Icon(Icons.Default.Save, "Save")
                     }
                 }
             )
         }
     ) {
-        BasicTextField(value = content, onValueChange = { content = it }, Modifier.fillMaxSize())
+        BasicTextField(value = content, onValueChange = onChange, Modifier.fillMaxSize())
     }
 }

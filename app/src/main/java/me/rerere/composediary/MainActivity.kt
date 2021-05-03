@@ -3,6 +3,7 @@ package me.rerere.composediary
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +13,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -36,6 +38,8 @@ class MainActivity : ComponentActivity() {
                     val systemUiController = rememberSystemUiController()
                     val useDarkIcons = MaterialTheme.colors.isLight
                     val systemColor = MaterialTheme.colors.primaryVariant
+                    val diaryViewModel =
+                        viewModel<DiaryViewModel>(factory = DiaryViewModelFactory(ComposeDiaryApp.repo))
                     SideEffect {
                         systemUiController.setSystemBarsColor(
                             color = systemColor,
@@ -49,7 +53,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         // 主页
                         composable("index") {
-                            Index(navController)
+                            Index(navController, diaryViewModel)
                         }
 
                         // 日记编辑页面
@@ -61,7 +65,7 @@ class MainActivity : ComponentActivity() {
                                     defaultValue = -1
                                 }
                             )) {
-                            EditPage(navController, it.arguments?.getInt("id")!!)
+                            EditPage(navController, diaryViewModel)
                         }
                     }
                 }

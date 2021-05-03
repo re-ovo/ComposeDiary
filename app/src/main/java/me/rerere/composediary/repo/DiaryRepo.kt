@@ -9,7 +9,7 @@ class DiaryRepo(private val diaryDao: DiaryDao) {
 
     suspend fun getDiaryById(id: Int): Diary = diaryDao.getDiaryByID(id)
 
-    suspend fun insertDiary(diary: Diary) = diaryDao.insert(diary)
+    suspend fun insertDiary(diary: Diary): Long = diaryDao.insert(diary)
 
     suspend fun update(diary: Diary) = diaryDao.update(diary)
 

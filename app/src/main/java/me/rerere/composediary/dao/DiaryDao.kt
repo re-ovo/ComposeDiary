@@ -13,7 +13,7 @@ interface DiaryDao {
     suspend fun getDiaryByID(id: Int): Diary
 
     @Insert
-    suspend fun insert(diary: Diary)
+    suspend fun insert(diary: Diary): Long
 
     @Update
     suspend fun update(diary: Diary)
