@@ -9,7 +9,7 @@ class ComposeDiaryApp : Application() {
     companion object {
         lateinit var appContext: ComposeDiaryApp
 
-        val database: DiaryDB by lazy {
+        private val database: DiaryDB by lazy {
             Room.databaseBuilder(appContext, DiaryDB::class.java, "diary_database").build()
         }
 
