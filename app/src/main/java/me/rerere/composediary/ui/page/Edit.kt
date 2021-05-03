@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.google.android.material.timepicker.TimeFormat
@@ -66,6 +67,10 @@ fun EditUI(content: String, date: Long, id: Int, onSave: () -> Unit, onChange: (
             )
         }
     ) {
-        BasicTextField(value = content, onValueChange = onChange, Modifier.fillMaxSize())
+        // 日记编辑框
+        BasicTextField(value = content, onValueChange = onChange, Modifier.fillMaxSize(), textStyle = LocalTextStyle.current.copy(
+            // 调整字号
+            fontSize = 25.sp
+        ))
     }
 }
