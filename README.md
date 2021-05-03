@@ -7,3 +7,8 @@
 * MVVM架构
 * Kotlin协程/Room/Navigation
 * 支持夜间模式(自动切换)
+
+## TODO List
+* 添加多语言支持
+* 页面切换动画 (等待navigation库添加该功能)
+* 解决编辑页面的直接返回处理
