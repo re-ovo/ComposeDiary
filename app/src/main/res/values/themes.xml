@@ -17,8 +17,6 @@
     <style name="Theme.rerere.composediary.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-
-        <item name="android:statusBarColor">@color/purple_200</item>
     </style>
 
     <style name="Theme.rerere.composediary.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
