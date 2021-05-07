@@ -103,9 +103,9 @@ fun AboutPage(navController: NavController) {
             // Boss直聘
             ContactInfo(icon = {
                 Image(
-                    painter = painterResource(id = R.drawable.bosszhiping),
+                    painter = painterResource(id = R.drawable.boss),
                     contentDescription = "BossZP",
-                    modifier = Modifier.size(30.dp)
+                    modifier = Modifier.size(40.dp)
                 )
             }, text = "Boss直聘"){
                 val intent = Intent(
