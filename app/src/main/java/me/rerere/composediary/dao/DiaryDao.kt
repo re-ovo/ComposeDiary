@@ -9,6 +9,9 @@ interface DiaryDao {
     @Query("SELECT * FROM diary")
     fun getAll() : Flow<List<Diary>>
 
+    @Query("SELECT * FROM diary WHERE content LIKE :condition")
+    suspend fun search(condition: String): List<Diary>
+
     @Query("SELECT * FROM diary WHERE id=:id LIMIT 1")
     suspend fun getDiaryByID(id: Int): Diary
 

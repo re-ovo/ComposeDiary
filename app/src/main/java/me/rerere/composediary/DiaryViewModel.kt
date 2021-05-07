@@ -14,8 +14,20 @@ class DiaryViewModel(private val diaryRepo: DiaryRepo) : ViewModel() {
     // 日记列表
     val diaryList: LiveData<List<Diary>> = diaryRepo.allDiary.asLiveData()
 
+    // 搜索结果
+    var searchMode by mutableStateOf(false)
+    private val _searchingResult = MutableLiveData<List<Diary>>()
+    val searchingResult: LiveData<List<Diary>> = _searchingResult
+
     // 当前正在编辑的日记
     var currentEditing by mutableStateOf(Diary(0, ""))
+
+    fun search(content: String) = viewModelScope.launch(Dispatchers.IO) {
+        val result = diaryRepo.search("%$content%")
+        withContext(Dispatchers.Main){
+            _searchingResult.value = result
+        }
+    }
 
 
     fun insert(diary: Diary) = viewModelScope.launch(Dispatchers.IO) {
@@ -60,10 +72,10 @@ class DiaryViewModel(private val diaryRepo: DiaryRepo) : ViewModel() {
     }
 }
 
-class DiaryViewModelFactory(private val diaryRepo: DiaryRepo) : ViewModelProvider.Factory {
+object DiaryViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(DiaryViewModel::class.java)) {
-            return DiaryViewModel(diaryRepo) as T
+            return DiaryViewModel(ComposeDiaryApp.repo) as T
         }
         error("Unknown view model class: ${modelClass.name}")
     }
