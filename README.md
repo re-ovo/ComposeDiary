@@ -3,7 +3,7 @@
 
 ## 技术栈和功能
 * 纯 Jetpack Compose 构建界面   
-* 支持 添加/删除/编辑/搜索(TODO) 日记
+* 支持 添加/删除/编辑/搜索 日记
 * MVVM架构
 * Kotlin协程/Room/Navigation
 * 支持夜间模式(自动切换)
