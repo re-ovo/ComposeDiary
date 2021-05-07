@@ -3,16 +3,20 @@ package me.rerere.composediary.ui.page
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.util.TimeUtils
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
@@ -27,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -51,6 +56,7 @@ import java.text.DateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
+@ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
 fun Index(navController: NavController, diaryViewModel: DiaryViewModel) {
@@ -68,9 +74,7 @@ fun Index(navController: NavController, diaryViewModel: DiaryViewModel) {
 
         // Drawer
         drawerContent = {
-            ModalDrawer(drawerContent = { Text(text = "What") }) {
-                Text(text = "???")
-            }
+            Drawer(navController)
         },
 
         // FAB, 用于新建日记
@@ -97,12 +101,16 @@ fun Index(navController: NavController, diaryViewModel: DiaryViewModel) {
             val searchResult by diaryViewModel.searchingResult.observeAsState(emptyList())
 
             // 有日记，通过LazyColumn显示
-            val grouped = if(!diaryViewModel.searchMode) diaryList.groupBy { it.date.formatAsTime() } else searchResult.groupBy { it.date.formatAsTime() }  // 合并同一天的日记
+            val grouped =
+                if (!diaryViewModel.searchMode) diaryList.groupBy { it.date.formatAsTime() } else searchResult.groupBy { it.date.formatAsTime() }  // 合并同一天的日记
 
             Column {
                 // 仅在搜索模式下展示
-                if(diaryViewModel.searchMode){
-                    Text(modifier = Modifier.fillMaxWidth(), text = "搜索结果: (${searchResult.size}条记录)")
+                if (diaryViewModel.searchMode) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "搜索结果: (${searchResult.size}条记录)"
+                    )
                 }
 
                 LazyColumn {
@@ -147,6 +155,55 @@ fun Index(navController: NavController, diaryViewModel: DiaryViewModel) {
     }
 }
 
+@ExperimentalMaterialApi
+@Composable
+fun Drawer(navController: NavController) {
+    Column {
+        // Header
+        Surface(
+            modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(130.dp),
+            color = MaterialTheme.colors.secondary,
+            elevation = 4.dp,
+        ) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+                Row {
+                    Box(modifier = Modifier.clip(CircleShape)){
+                        Image(painterResource(id = R.drawable.logo), "Jetpack Compose Logo", Modifier.size(90.dp))
+                    }
+                    Column(
+                        Modifier
+                            .padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(text = "ComposeDiary", style = MaterialTheme.typography.h5)
+                        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                            Text(text = "Based on Jetpack Compose™")
+                        }
+                    }
+                }
+            }
+        }
+        // Items
+
+        val context = LocalContext.current
+
+        //github
+        ListItem(icon = { Icon(Icons.Default.Source, "Source code")}, modifier = Modifier.clickable {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/jiangdashao/ComposeDiary"))
+            context.startActivity(intent)
+        }){
+            Text(text = "源代码")
+        }
+        //about
+        ListItem(icon = { Icon(Icons.Default.Info, "About the App")}, modifier = Modifier.clickable {
+            navController.navigate("about")
+        }){
+            Text(text = "关于")
+        }
+    }
+}
+
 @Composable
 fun TopBar(diaryViewModel: DiaryViewModel, scaffoldState: ScaffoldState) {
     val scope = rememberCoroutineScope()
@@ -174,7 +231,7 @@ fun TopBar(diaryViewModel: DiaryViewModel, scaffoldState: ScaffoldState) {
                             value = searchContent,
                             onValueChange = { newValue ->
                                 searchContent = newValue
-                                if(newValue.isNotBlank()) {
+                                if (newValue.isNotBlank()) {
                                     diaryViewModel.search(newValue)
                                 }
                             },

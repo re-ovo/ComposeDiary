@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.SideEffect
 import androidx.navigation.compose.NavHost
@@ -13,6 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import me.rerere.composediary.ui.page.AboutPage
 import me.rerere.composediary.ui.page.EditPage
 import me.rerere.composediary.ui.page.Index
 import me.rerere.composediary.ui.theme.ComposeDiaryTheme
@@ -22,6 +24,7 @@ class MainActivity : ComponentActivity() {
         DiaryViewModelFactory
     }
 
+    @ExperimentalMaterialApi
     @ExperimentalAnimationApi
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +54,11 @@ class MainActivity : ComponentActivity() {
                         // 日记编辑页面
                         composable("edit") {
                             EditPage(navController, diaryViewModel)
+                        }
+
+                        // 关于页面
+                        composable("about"){
+                            AboutPage(navController)
                         }
                     }
                 }

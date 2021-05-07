@@ -54,6 +54,9 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.3.0-alpha07'
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
 
+    // Coil
+    implementation "com.google.accompanist:accompanist-coil:0.9.0"
+
     // 约束布局
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha05"
 
