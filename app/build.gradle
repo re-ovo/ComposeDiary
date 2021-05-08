@@ -64,8 +64,8 @@ dependencies {
     implementation "com.github.fornewid:material-motion-compose:0.4.4"
 
     // 状态栏颜色
-    implementation "com.google.accompanist:accompanist-systemuicontroller:0.8.1"
-    implementation "com.google.accompanist:accompanist-insets:0.8.1"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.9.0"
+    implementation "com.google.accompanist:accompanist-insets:0.9.0"
 
     // 图标
     implementation "androidx.compose.material:material-icons-extended:$compose_version"

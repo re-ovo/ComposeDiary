@@ -32,16 +32,17 @@ class MainActivity : ComponentActivity() {
         setContent {
             ProvideWindowInsets {
                 ComposeDiaryTheme {
-                    val navController = rememberNavController()
                     val systemUiController = rememberSystemUiController()
                     val systemColor = MaterialTheme.colors.primary
                     val isLight = MaterialTheme.colors.isLight
                     SideEffect {
-                        systemUiController.setSystemBarsColor(
+                        systemUiController.setStatusBarColor(
                             color = systemColor,
                             darkIcons = isLight
                         )
                     }
+
+                    val navController = rememberNavController()
                     NavHost(
                         navController = navController,
                         startDestination = "index"

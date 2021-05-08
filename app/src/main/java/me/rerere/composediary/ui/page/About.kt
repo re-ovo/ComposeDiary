@@ -10,23 +10,22 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.accompanist.coil.rememberCoilPainter
 import me.rerere.composediary.R
+import me.rerere.composediary.util.noRippleClickable
 
 // 头像地址 0w0
-private const val AVATAR_URL = "https://avatars.githubusercontent.com/u/21152113?v=4"
+private const val AVATAR_URL = "https://avatars.githubusercontent.com/u/21152113"
 
 @Composable
 fun AboutPage(navController: NavController) {
