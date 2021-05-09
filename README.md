@@ -9,8 +9,9 @@
 * 支持夜间模式(自动切换)
 
 ## 截图
-<img src="img/ss-1.png" align="left" height="150">
-<img src="img/ss-2.png" align="left" height="150">
+| 主页面 | 侧边栏 |
+| ----- | ------|
+| <img src="img/ss-1.png" align="left" height="300">| <img src="img/ss-2.png" align="left" height="300">|
 
 
 ## TODO List
