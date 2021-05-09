@@ -37,10 +37,19 @@ class MainActivity : ComponentActivity() {
                     val systemColor = MaterialTheme.colors.primary
                     val isLight = MaterialTheme.colors.isLight
                     SideEffect {
-                        systemUiController.setStatusBarColor(
-                            color = systemColor,
-                            darkIcons = isLight
-                        )
+                        systemUiController.apply {
+                            // 设置导航栏
+                            // 必须先设置导航栏再设置状态栏，否则在某些系统上状态栏会显示白色icon :(
+                            setNavigationBarColor(
+                                color = systemColor,
+                                darkIcons = isLight
+                            )
+                            // 设置状态栏
+                            setStatusBarColor(
+                                color = systemColor,
+                                darkIcons = isLight
+                            )
+                        }
                     }
 
                     val navController = rememberNavController()
