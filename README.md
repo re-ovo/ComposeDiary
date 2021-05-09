@@ -11,7 +11,7 @@
 ## 截图
 | 主页面 | 侧边栏 |
 | ----- | ------|
-| <img src="img/ss-1.png" align="left" height="300">| <img src="img/ss-2.png" align="left" height="300">|
+| <img src="img/ss-1.png" align="left" height="400">| <img src="img/ss-2.png" align="left" height="400">|
 
 
 ## TODO List
