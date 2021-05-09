@@ -8,6 +8,9 @@
 * Kotlin协程/Room/Navigation
 * 支持夜间模式(自动切换)
 
+## 截图
+![](imgs/ss-1.png)
+
 ## TODO List
 * 添加多语言支持
 * 页面切换动画 (等待navigation库添加该功能)
