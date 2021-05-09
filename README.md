@@ -10,9 +10,8 @@
 
 ## 截图
 <img src="img/ss-1.png" align="left" height="150">
-<br>
 <img src="img/ss-2.png" align="left" height="150">
-<br>
+
 
 ## TODO List
 * 添加多语言支持
