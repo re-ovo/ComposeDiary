@@ -1,28 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ComposeDiary</string>
-    <string name="add_diary_description">Create a diary</string>
+    <string name="add_diary_description">Create a new diary</string>
     <string name="empty_diary">Click \"+\" to create a new diary</string>
     <string name="search_result">Result: Found %1$d Results</string>
-    <string name="drawer_logo_description">Jetpack compose logo</string>
+    <string name="drawer_logo_description">JetpackCompose Logo</string>
     <string name="drawer_subtitle">Based on Jetpack Compose</string>
     <string name="drawer_item_sourcecode">Source Code</string>
     <string name="drawer_item_aboutapp">About the APP</string>
-    <string name="drawer_bottom_followdarkmode">Follow the system dark mode</string>
-    <string name="close_searchbar">Close search bar</string>
+    <string name="drawer_bottom_followdarkmode">Follow the System Dark Mode</string>
+    <string name="close_searchbar">Close the search bar</string>
     <string name="topbar_drawer_description">Open the drawer</string>
     <string name="topbar_drawer_deleteall">Delete all diary</string>
-    <string name="topbar_drawer_search">Search a diary</string>
+    <string name="topbar_drawer_search">Search diary</string>
     <string name="diaryitem_delete_description">Delete the diary</string>
-    <string name="delete_diary_snackbar_text">Deleted the diary</string>
+    <string name="delete_diary_snackbar_text">Deleted this diary</string>
     <string name="delete_diary_snackbar_label">Ok</string>
     <string name="diaryitem_edit_description">Edit the diary</string>
     <string name="diaryitem_copy_description">Copy to clipboard</string>
     <string name="diaryitem_copy_done">Copied to clipboard</string>
     <string name="edit_save_notempty">Diary can\'t be empty</string>
-    <string name="edit_save_done">Saved the dairy</string>
+    <string name="edit_save_done">Saved the diary</string>
     <string name="edit_title">Edit the Diary (%1$s)</string>
-    <string name="about_title">About the APP</string>
+    <string name="about_title">About</string>
     <string name="about_items_contact">Contact Me</string>
-    <string name="about_opensource_libs">Open source libraries</string>
+    <string name="about_opensource_libs">Thirparty libraries</string>
     <string name="about_donate">Donate</string>
 </resources>

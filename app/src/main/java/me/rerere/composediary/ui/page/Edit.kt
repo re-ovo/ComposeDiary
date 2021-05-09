@@ -10,9 +10,11 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import me.rerere.composediary.DiaryViewModel
+import me.rerere.composediary.R
 import me.rerere.composediary.util.formatAsTime
 
 @Composable
@@ -30,13 +32,15 @@ fun EditPage(navController: NavController, diaryViewModel: DiaryViewModel) {
     // context
     val context = LocalContext.current
 
+    val canNotEmpty = stringResource(R.string.edit_save_notempty)
+    val saved = stringResource(R.string.edit_save_done)
     EditUI(content, date, state.id, {
         if (content.isEmpty()) {
-            Toast.makeText(context, "日记不能为空！", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, canNotEmpty, Toast.LENGTH_SHORT).show()
         } else {
             state.content = content
             diaryViewModel.update(state)
-            Toast.makeText(context, "保存完成!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, saved, Toast.LENGTH_SHORT).show()
             navController.popBackStack()
         }
     }, {
@@ -50,7 +54,7 @@ fun EditUI(content: String, date: Long, id: Int, onSave: () -> Unit, onChange: (
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "编辑日记: $id (${date.formatAsTime()})") },
+                title = { Text(stringResource(R.string.edit_title, date.formatAsTime())) },
                 actions = {
                     IconButton(onClick = onSave) {
                         Icon(Icons.Default.Save, "Save")

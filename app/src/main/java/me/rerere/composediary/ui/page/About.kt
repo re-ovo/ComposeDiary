@@ -2,6 +2,7 @@ package me.rerere.composediary.ui.page
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -14,9 +15,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -32,7 +36,7 @@ fun AboutPage(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(title = {
-                Text(text = "关于")
+                Text(text = stringResource(R.string.about_title))
             }, navigationIcon = {
                 IconButton(onClick = {
                     navController.popBackStack()
@@ -89,7 +93,11 @@ fun AboutPage(navController: NavController) {
             val context = LocalContext.current
 
             // 联系方式
-            Text(text = "联系方式: ", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
+            Text(
+                text = stringResource(R.string.about_items_contact),
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
 
             // QQ
             ContactInfo(icon = {
@@ -106,7 +114,7 @@ fun AboutPage(navController: NavController) {
                     contentDescription = "BossZP",
                     modifier = Modifier.size(40.dp)
                 )
-            }, text = "Boss直聘"){
+            }, text = "Boss直聘") {
                 val intent = Intent(
                     Intent.ACTION_VIEW,
                     Uri.parse("https://m.zhipin.com/mpa/html/resume-detail?sid=self&securityId=1IPxzNwoQo4sE-W18WAog3HjhwPqVR45Wuuv9jeSBo2OFq1h3z2x0G1QMev4Uhzdp1XYuUtNsoPOJeNEjk9Yk4Jt-p1-tB1rXHnIWgec7qQsBbDzJob0gCyv8hmUtYebUCOm1fbQzpO-K_fKXxTgIxo5xAkf5elIpOkKxw~~\n")
@@ -115,7 +123,11 @@ fun AboutPage(navController: NavController) {
             }
 
             // 所用开源库
-            Text(text = "所用开源库:", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
+            Text(
+                text = stringResource(R.string.about_opensource_libs),
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
             OpenSourceLibraryItem(
                 name = "Accompanist",
                 link = "https://github.com/google/accompanist"
@@ -123,21 +135,36 @@ fun AboutPage(navController: NavController) {
 
             // Donate
             Text(
-                text = "我很可爱，请给我钱:", modifier = Modifier
+                text = stringResource(R.string.about_donate), modifier = Modifier
                     .fillMaxWidth()
                     .padding(5.dp), textAlign = TextAlign.Center
             )
-            Card(
-                Modifier
-                    .padding(8.dp)
-                    .fillMaxWidth()
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Image(
-                        painter = painterResource(id = R.drawable.alipay),
-                        contentDescription = "恰饭"
-                    )
-                    Text("蟹蟹")
+
+            if (Locale.current.language == "zh") {
+                // Chinese users, show alipay QR code
+                Card(
+                    Modifier
+                        .padding(8.dp)
+                        .fillMaxWidth()
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Image(
+                            painter = painterResource(id = R.drawable.alipay),
+                            contentDescription = "恰饭"
+                        )
+                        Text("蟹蟹")
+                    }
+                }
+            } else {
+                // show paypal address
+                Card(
+                    Modifier
+                        .padding(8.dp)
+                        .fillMaxWidth()
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("https://paypal.me/matrixac")
+                    }
                 }
             }
         }

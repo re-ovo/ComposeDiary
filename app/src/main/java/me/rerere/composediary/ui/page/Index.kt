@@ -5,9 +5,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.TimeUtils
-import android.widget.Toast
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -28,8 +25,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -37,26 +32,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
-import com.google.accompanist.insets.statusBarsPadding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import me.rerere.composediary.ComposeDiaryApp
 import me.rerere.composediary.DiaryViewModel
-import me.rerere.composediary.DiaryViewModelFactory
 import me.rerere.composediary.R
 import me.rerere.composediary.model.Diary
 import me.rerere.composediary.util.formatAsTime
-import soup.compose.material.motion.*
-import java.text.DateFormat
-import java.util.*
-import java.util.concurrent.TimeUnit
+import soup.compose.material.motion.MaterialMotion
+import soup.compose.material.motion.crossfade
 
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
@@ -85,7 +74,7 @@ fun Index(navController: NavController, diaryViewModel: DiaryViewModel) {
                 diaryViewModel.startEditing(-1)// -1 = create a new diary
                 navController.navigate("edit")
             }) {
-                Icon(Icons.Rounded.Add, "Create a diary")
+                Icon(Icons.Rounded.Add, stringResource(R.string.add_diary_description))
             }
         }
     ) {
@@ -95,9 +84,9 @@ fun Index(navController: NavController, diaryViewModel: DiaryViewModel) {
         }
         // 展示日记列表
         if (diaryList.isEmpty() && !diaryViewModel.searchMode) {
-            // 没有日记
+            // 没有日记, 显示创建日记帮助
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(text = "点击 \"+\" 新建日记")
+                Text(stringResource(R.string.empty_diary))
             }
         } else {
             val searchResult by diaryViewModel.searchingResult.observeAsState(emptyList())
@@ -111,7 +100,7 @@ fun Index(navController: NavController, diaryViewModel: DiaryViewModel) {
                 if (diaryViewModel.searchMode) {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = "搜索结果: (${searchResult.size}条记录)"
+                        text = stringResource(R.string.search_result, searchResult.size)
                     )
                 }
 
@@ -181,7 +170,7 @@ fun Drawer(navController: NavController, diaryViewModel: DiaryViewModel) {
                     Box(modifier = Modifier.clip(CircleShape)) {
                         Image(
                             painterResource(id = R.drawable.logo),
-                            "Jetpack Compose Logo",
+                            stringResource(R.string.drawer_logo_description),
                             Modifier.size(90.dp)
                         )
                     }
@@ -189,9 +178,9 @@ fun Drawer(navController: NavController, diaryViewModel: DiaryViewModel) {
                         Modifier
                             .padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(text = "ComposeDiary", style = MaterialTheme.typography.h5)
+                        Text(stringResource(R.string.app_name), style = MaterialTheme.typography.h5)
                         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                            Text(text = "Based on Jetpack Compose™")
+                            Text(stringResource(R.string.drawer_subtitle))
                         }
                     }
                 }
@@ -205,7 +194,12 @@ fun Drawer(navController: NavController, diaryViewModel: DiaryViewModel) {
         }) {
             //github
             ListItem(
-                icon = { Icon(Icons.Default.Source, "Source code") },
+                icon = {
+                    Icon(
+                        Icons.Default.Source,
+                        stringResource(R.string.drawer_item_sourcecode)
+                    )
+                },
                 modifier = Modifier.clickable {
                     val intent = Intent(
                         Intent.ACTION_VIEW,
@@ -213,15 +207,15 @@ fun Drawer(navController: NavController, diaryViewModel: DiaryViewModel) {
                     )
                     context.startActivity(intent)
                 }) {
-                Text(text = "源代码")
+                Text(stringResource(R.string.drawer_item_sourcecode))
             }
             //about
             ListItem(
-                icon = { Icon(Icons.Default.Info, "About the App") },
+                icon = { Icon(Icons.Default.Info, stringResource(R.string.drawer_item_aboutapp)) },
                 modifier = Modifier.clickable {
                     navController.navigate("about")
                 }) {
-                Text(text = "关于")
+                Text(text = stringResource(R.string.drawer_item_aboutapp))
             }
         }
 
@@ -236,9 +230,13 @@ fun Drawer(navController: NavController, diaryViewModel: DiaryViewModel) {
                 .fillMaxWidth(),
             shape = RoundedCornerShape(8.dp)
         ) {
-            Row(Modifier.padding(16.dp)) {
-                Icon(Icons.Default.DarkMode, "Follow the system dark mode")
-                Text(text = "跟随系统暗色模式", modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+            Row(Modifier.padding(8.dp)) {
+                Icon(Icons.Default.DarkMode, stringResource(R.string.drawer_bottom_followdarkmode))
+                Text(
+                    text = stringResource(R.string.drawer_bottom_followdarkmode),
+                    modifier = Modifier.weight(1f),
+                    textAlign = TextAlign.Center
+                )
                 Switch(checked = diaryViewModel.followSystemDarkMode, onCheckedChange = {
                     diaryViewModel.followSystemDarkMode = it
                     diaryViewModel.updateSetting()
@@ -288,7 +286,7 @@ fun TopBar(diaryViewModel: DiaryViewModel, scaffoldState: ScaffoldState) {
                     IconButton(modifier = Modifier.wrapContentWidth(), onClick = {
                         diaryViewModel.searchMode = false
                     }) {
-                        Icon(Icons.Default.Close, "Close Search Bar")
+                        Icon(Icons.Default.Close, stringResource(R.string.close_searchbar))
                     }
                 }
             }
@@ -301,7 +299,7 @@ fun TopBar(diaryViewModel: DiaryViewModel, scaffoldState: ScaffoldState) {
                             scaffoldState.drawerState.open()
                         }
                     }) {
-                        Icon(Icons.Default.Menu, "Navigation")
+                        Icon(Icons.Default.Menu, stringResource(R.string.topbar_drawer_description))
                     }
                 },
                 actions = {
@@ -311,7 +309,8 @@ fun TopBar(diaryViewModel: DiaryViewModel, scaffoldState: ScaffoldState) {
                             diaryViewModel.deleteAll()
                         }) {
                             Icon(
-                                Icons.Default.DeleteForever, "Delete All"
+                                Icons.Default.DeleteForever,
+                                stringResource(R.string.topbar_drawer_deleteall)
                             )
                         }
 
@@ -319,7 +318,10 @@ fun TopBar(diaryViewModel: DiaryViewModel, scaffoldState: ScaffoldState) {
                         IconButton(onClick = {
                             diaryViewModel.searchMode = true
                         }) {
-                            Icon(Icons.Default.Search, "Search a diary")
+                            Icon(
+                                Icons.Default.Search,
+                                stringResource(R.string.topbar_drawer_search)
+                            )
                         }
                     }
                 }
@@ -365,7 +367,11 @@ fun DiaryCard(
         Column(modifier = Modifier.padding(16.dp)) {
             Column {
                 // 显示日记内容
-                Box(modifier = Modifier.fillMaxWidth().requiredHeight(30.dp)){
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .requiredHeight(30.dp)
+                ) {
                     Text(diary.content)
                 }
 
@@ -379,26 +385,29 @@ fun DiaryCard(
                             diaryViewModel.startEditing(diary.id)
                             navController.navigate("edit?id=${diary.id}")
                         }) {
-                            Icon(Icons.Default.Edit, "Edit the diary")
+                            Icon(Icons.Default.Edit, stringResource(R.string.diaryitem_edit_description))
                         }
 
                         // 删除日记
+                        val text = stringResource(R.string.delete_diary_snackbar_text)
+                        val actionLabel = stringResource(R.string.delete_diary_snackbar_label)
                         IconButton(modifier = Modifier
                             .padding(8.dp)
                             .size(25.dp), onClick = {
                             diaryViewModel.delete(diary)
                             scope.launch {
                                 scaffoldState.snackbarHostState.showSnackbar(
-                                    "已删除日记",
-                                    "关闭",
+                                    text,
+                                    actionLabel,
                                     duration = SnackbarDuration.Short
                                 )
                             }
                         }) {
-                            Icon(Icons.Default.Delete, "Delete the diary")
+                            Icon(Icons.Default.Delete, stringResource(R.string.diaryitem_delete_description))
                         }
 
                         // 复制日记内容
+                        val copied = stringResource(R.string.diaryitem_copy_done)
                         IconButton(modifier = Modifier
                             .padding(8.dp)
                             .size(25.dp), onClick = {
@@ -407,10 +416,10 @@ fun DiaryCard(
                             clipboard.setPrimaryClip(ClipData.newPlainText(null, diary.content))
                             // Toast.makeText(context, "已复制到剪贴板", Toast.LENGTH_SHORT).show()
                             scope.launch {
-                                scaffoldState.snackbarHostState.showSnackbar("已复制到剪贴板", "关闭")
+                                scaffoldState.snackbarHostState.showSnackbar(copied)
                             }
                         }) {
-                            Icon(Icons.Default.CopyAll, "Copy the diary")
+                            Icon(Icons.Default.CopyAll, stringResource(R.string.diaryitem_copy_description))
                         }
                     }
                 }

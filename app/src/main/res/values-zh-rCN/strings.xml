@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ComposeDiary</string>
+    <string name="add_diary_description">创建新日记</string>
+    <string name="empty_diary">点击 \"+\" 新建日记</string>
+    <string name="search_result">搜索完成: 找到 %1$d 篇日记</string>
+    <string name="drawer_logo_description">JetpackCompose Logo</string>
+    <string name="drawer_subtitle">基于Jetpack Compose</string>
+    <string name="drawer_item_sourcecode">源代码</string>
+    <string name="drawer_item_aboutapp">关于</string>
+    <string name="drawer_bottom_followdarkmode">跟随系统暗色模式</string>
+    <string name="close_searchbar">关闭搜索栏</string>
+    <string name="topbar_drawer_description">打开侧边栏</string>
+    <string name="topbar_drawer_deleteall">删除所有日记</string>
+    <string name="topbar_drawer_search">搜索日记</string>
+    <string name="diaryitem_delete_description">删除此日记</string>
+    <string name="delete_diary_snackbar_text">成功删除了本日记</string>
+    <string name="delete_diary_snackbar_label">好的</string>
+    <string name="diaryitem_edit_description">编辑日记</string>
+    <string name="diaryitem_copy_description">复制到剪贴板</string>
+    <string name="diaryitem_copy_done">已复制到剪贴板</string>
+    <string name="edit_save_notempty">日记不能为空</string>
+    <string name="edit_save_done">保存日记完成</string>
+    <string name="edit_title">编辑日记 (%1$s)</string>
+    <string name="about_title">关于</string>
+    <string name="about_items_contact">联系方式</string>
+    <string name="about_opensource_libs">第三方开源库</string>
+    <string name="about_donate">捐助</string>
+</resources>
