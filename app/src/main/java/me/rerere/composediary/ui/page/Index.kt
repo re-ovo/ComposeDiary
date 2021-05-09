@@ -36,6 +36,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -232,10 +233,12 @@ fun Drawer(navController: NavController, diaryViewModel: DiaryViewModel) {
                     this.start.linkTo(parent.start)
                 }
                 .padding(16.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(8.dp)
         ) {
             Row(Modifier.padding(16.dp)) {
-                Text(text = "跟随系统暗色模式")
+                Icon(Icons.Default.DarkMode, "Follow the system dark mode")
+                Text(text = "跟随系统暗色模式", modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
                 Switch(checked = diaryViewModel.followSystemDarkMode, onCheckedChange = {
                     diaryViewModel.followSystemDarkMode = it
                     diaryViewModel.updateSetting()
@@ -362,7 +365,9 @@ fun DiaryCard(
         Column(modifier = Modifier.padding(16.dp)) {
             Column {
                 // 显示日记内容
-                Text(diary.content)
+                Box(modifier = Modifier.fillMaxWidth().requiredHeight(30.dp)){
+                    Text(diary.content)
+                }
 
                 // 展开操作图标
                 if (expand) {
