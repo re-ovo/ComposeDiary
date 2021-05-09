@@ -29,6 +29,7 @@ import me.rerere.composediary.R
 import me.rerere.composediary.util.noRippleClickable
 
 // 头像地址 0w0
+// Avatar URL
 private const val AVATAR_URL = "https://avatars.githubusercontent.com/u/21152113"
 
 @Composable
@@ -47,11 +48,13 @@ fun AboutPage(navController: NavController) {
         }
     ) {
         // 页面内容
+        // Page Content
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // 作者信息
+            // Author Info
             Card(
                 Modifier
                     .padding(16.dp)
@@ -93,13 +96,14 @@ fun AboutPage(navController: NavController) {
             val context = LocalContext.current
 
             // 联系方式
+            // Contact Info
             Text(
                 text = stringResource(R.string.about_items_contact),
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
 
-            // QQ
+            // Tencent QQ
             ContactInfo(icon = {
                 Image(
                     painter = painterResource(id = R.drawable.qq),
@@ -123,6 +127,7 @@ fun AboutPage(navController: NavController) {
             }
 
             // 所用开源库
+            // Third-party library
             Text(
                 text = stringResource(R.string.about_opensource_libs),
                 modifier = Modifier.fillMaxWidth(),

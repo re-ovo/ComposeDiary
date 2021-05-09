@@ -8,6 +8,7 @@ import androidx.compose.ui.composed
 
 /**
  * 无波纹效果的点击方法
+ * `clickable{}` without ripple effect
  *
  * @param onClick 点击回调函数
  */

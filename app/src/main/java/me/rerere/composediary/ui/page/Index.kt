@@ -59,6 +59,7 @@ fun Index(navController: NavController, diaryViewModel: DiaryViewModel) {
         scaffoldState = scaffoldState,
 
         // 支持搜索功能的顶栏
+        // A topbar with search feature
         topBar = {
             TopBar(diaryViewModel, scaffoldState)
         },
@@ -69,6 +70,7 @@ fun Index(navController: NavController, diaryViewModel: DiaryViewModel) {
         },
 
         // FAB, 用于新建日记
+        // FAB, create diary
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 diaryViewModel.startEditing(-1)// -1 = create a new diary
@@ -78,12 +80,15 @@ fun Index(navController: NavController, diaryViewModel: DiaryViewModel) {
             }
         }
     ) {
+        // Current expanded item id (Prevent multiple items from being expanded at the same time)
         // 当前正在展开的Item, 主要用于互斥展开(同时仅能有一个item被展开)
         val expandIndex: MutableState<Int> = remember {
             mutableStateOf(0)
         }
+        // Show diary list
         // 展示日记列表
         if (diaryList.isEmpty() && !diaryViewModel.searchMode) {
+            // There is no diary, show creation helper
             // 没有日记, 显示创建日记帮助
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(stringResource(R.string.empty_diary))
@@ -91,11 +96,12 @@ fun Index(navController: NavController, diaryViewModel: DiaryViewModel) {
         } else {
             val searchResult by diaryViewModel.searchingResult.observeAsState(emptyList())
 
-            // 有日记，通过LazyColumn显示
+            // Group the diary by their date
             val grouped =
                 if (!diaryViewModel.searchMode) diaryList.groupBy { it.date.formatAsTime() } else searchResult.groupBy { it.date.formatAsTime() }  // 合并同一天的日记
 
             Column {
+                // Only show in search mode
                 // 仅在搜索模式下展示
                 if (diaryViewModel.searchMode) {
                     Text(
@@ -104,10 +110,13 @@ fun Index(navController: NavController, diaryViewModel: DiaryViewModel) {
                     )
                 }
 
+                // There is diaries, show in the lazy column
+                // 有日记，通过LazyColumn显示
                 LazyColumn {
                     grouped.forEach {
                         val (date, dairies) = it
 
+                        // Show diary date in sticker (experimental)
                         // 显示日期sticker (实验性API)
                         stickyHeader {
                             Surface(
@@ -128,6 +137,7 @@ fun Index(navController: NavController, diaryViewModel: DiaryViewModel) {
                             }
                         }
 
+                        // Show all diaries of the date
                         // 显示当前日期下的日记item
                         items(dairies) { diary ->
                             DiaryCard(
@@ -250,13 +260,16 @@ fun Drawer(navController: NavController, diaryViewModel: DiaryViewModel) {
 fun TopBar(diaryViewModel: DiaryViewModel, scaffoldState: ScaffoldState) {
     val scope = rememberCoroutineScope()
     // 切换动画
+    // Search bar animation
     MaterialMotion(targetState = diaryViewModel.searchMode, motionSpec = crossfade()) {
         if (it) {
+            // Search Bar
             TopAppBar {
                 var searchContent by remember {
                     mutableStateOf("")
                 }
                 Row(Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
+                    // input field
                     // 搜索框
                     Box(
                         modifier = Modifier
@@ -283,6 +296,7 @@ fun TopBar(diaryViewModel: DiaryViewModel, scaffoldState: ScaffoldState) {
                     }
 
                     // 关闭搜索功能
+                    // Close search bar
                     IconButton(modifier = Modifier.wrapContentWidth(), onClick = {
                         diaryViewModel.searchMode = false
                     }) {
@@ -291,6 +305,7 @@ fun TopBar(diaryViewModel: DiaryViewModel, scaffoldState: ScaffoldState) {
                 }
             }
         } else {
+            // Normal Bar
             TopAppBar(
                 title = { Text(text = stringResource(R.string.app_name)) },
                 navigationIcon = {
@@ -304,6 +319,7 @@ fun TopBar(diaryViewModel: DiaryViewModel, scaffoldState: ScaffoldState) {
                 },
                 actions = {
                     Row {
+                        // Clear all diaries
                         // 清空所有日记
                         IconButton(onClick = {
                             diaryViewModel.deleteAll()
@@ -314,6 +330,7 @@ fun TopBar(diaryViewModel: DiaryViewModel, scaffoldState: ScaffoldState) {
                             )
                         }
 
+                        // Search diary
                         // 搜索日记
                         IconButton(onClick = {
                             diaryViewModel.searchMode = true
@@ -339,9 +356,11 @@ fun DiaryCard(
     scaffoldState: ScaffoldState,
     scope: CoroutineScope
 ) {
+    // Whether to expand this card to show buttons
     // 是否展开这个卡片，显示各种操作icon
     var expand by remember { mutableStateOf(false) }
 
+    // Make sure only one card expands at the same time
     // 实现展开互斥
     LaunchedEffect(expandIndex.value) {
         if (expand && expandIndex.value != diary.id) {
@@ -349,6 +368,7 @@ fun DiaryCard(
         }
     }
 
+    // Diary Card
     // 日记信息卡片
     Card(
         elevation = 4.dp,
@@ -378,6 +398,7 @@ fun DiaryCard(
                 // 展开操作图标
                 if (expand) {
                     Row {
+                        // Edit the diary
                         // 编辑日记
                         IconButton(modifier = Modifier
                             .padding(8.dp)
@@ -388,6 +409,7 @@ fun DiaryCard(
                             Icon(Icons.Default.Edit, stringResource(R.string.diaryitem_edit_description))
                         }
 
+                        // Delete the diary
                         // 删除日记
                         val text = stringResource(R.string.delete_diary_snackbar_text)
                         val actionLabel = stringResource(R.string.delete_diary_snackbar_label)
@@ -406,6 +428,7 @@ fun DiaryCard(
                             Icon(Icons.Default.Delete, stringResource(R.string.diaryitem_delete_description))
                         }
 
+                        // Copy diary
                         // 复制日记内容
                         val copied = stringResource(R.string.diaryitem_copy_done)
                         IconButton(modifier = Modifier
