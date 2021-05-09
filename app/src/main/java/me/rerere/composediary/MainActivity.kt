@@ -24,7 +24,6 @@ class MainActivity : ComponentActivity() {
     private val diaryViewModel by viewModels<DiaryViewModel> {
         DiaryViewModelFactory
     }
-
     @ExperimentalMaterialApi
     @ExperimentalAnimationApi
     @ExperimentalFoundationApi

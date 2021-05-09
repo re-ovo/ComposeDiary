@@ -15,13 +15,13 @@ private val DarkColorPalette = darkColors(
 )
 
 val LightColorPalette = lightColors(
-    primary = Color.White.copy(),
-    primaryVariant = Color(0xffcccccc),
+    primary = Color.LightGray.copy(),
+    primaryVariant = Color.LightGray.copy(),
     onPrimary = Color.Black.copy(),
 
     secondary = Color(0xffe91e63),
     secondaryVariant = Color(0xffb0003a),
-    onSecondary = Color.White
+    onSecondary = Color.White,
 )
 
 @Composable

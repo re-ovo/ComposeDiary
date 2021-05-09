@@ -5,7 +5,9 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,10 +18,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.rounded.Add
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -44,8 +46,6 @@ import me.rerere.composediary.DiaryViewModel
 import me.rerere.composediary.R
 import me.rerere.composediary.model.Diary
 import me.rerere.composediary.util.formatAsTime
-import soup.compose.material.motion.MaterialMotion
-import soup.compose.material.motion.crossfade
 
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
@@ -76,7 +76,7 @@ fun Index(navController: NavController, diaryViewModel: DiaryViewModel) {
                 diaryViewModel.startEditing(-1)// -1 = create a new diary
                 navController.navigate("edit")
             }) {
-                Icon(Icons.Rounded.Add, stringResource(R.string.add_diary_description))
+                Icon(Icons.Default.Create, stringResource(R.string.add_diary_description))
             }
         }
     ) {
@@ -261,7 +261,7 @@ fun TopBar(diaryViewModel: DiaryViewModel, scaffoldState: ScaffoldState) {
     val scope = rememberCoroutineScope()
     // 切换动画
     // Search bar animation
-    MaterialMotion(targetState = diaryViewModel.searchMode, motionSpec = crossfade()) {
+    Crossfade(targetState = diaryViewModel.searchMode, animationSpec = tween(durationMillis = 400)) {
         if (it) {
             // Search Bar
             TopAppBar {
@@ -276,7 +276,7 @@ fun TopBar(diaryViewModel: DiaryViewModel, scaffoldState: ScaffoldState) {
                             .weight(1f)
                             .height(35.dp)
                             .clip(RoundedCornerShape(16.dp))
-                            .background(Color.LightGray),
+                            .background(Color.Gray),
                         contentAlignment = Alignment.Center
                     ) {
                         BasicTextField(
@@ -390,9 +390,16 @@ fun DiaryCard(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .requiredHeight(30.dp)
+                        .heightIn(min = 30.dp)
                 ) {
-                    Text(diary.content)
+                    if(expand){
+                        // able to select when expanded
+                        SelectionContainer {
+                            Text(diary.content)
+                        }
+                    }else {
+                        Text(diary.content)
+                    }
                 }
 
                 // 展开操作图标

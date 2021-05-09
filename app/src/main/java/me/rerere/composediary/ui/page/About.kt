@@ -2,7 +2,6 @@ package me.rerere.composediary.ui.page
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -26,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.accompanist.coil.rememberCoilPainter
 import me.rerere.composediary.R
-import me.rerere.composediary.util.noRippleClickable
 
 // 头像地址 0w0
 // Avatar URL
@@ -65,7 +62,7 @@ fun AboutPage(navController: NavController) {
                 Box(modifier = Modifier.padding(16.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         // 头像
-                        val avatarSource = rememberCoilPainter(request = AVATAR_URL)
+                        val avatarSource = rememberCoilPainter(request = AVATAR_URL, fadeIn = true)
                         Box(
                             modifier = Modifier
                                 .clip(CircleShape)
