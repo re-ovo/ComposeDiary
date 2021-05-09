@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.SideEffect
@@ -31,7 +32,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ProvideWindowInsets {
-                ComposeDiaryTheme {
+                ComposeDiaryTheme(darkTheme = isSystemInDarkTheme() && diaryViewModel.followSystemDarkMode) {
                     val systemUiController = rememberSystemUiController()
                     val systemColor = MaterialTheme.colors.primary
                     val isLight = MaterialTheme.colors.isLight

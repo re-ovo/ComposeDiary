@@ -1,8 +1,11 @@
 package me.rerere.composediary
 
+import android.content.Context
+import android.preference.PreferenceManager
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.content.edit
 import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -11,6 +14,15 @@ import me.rerere.composediary.model.Diary
 import me.rerere.composediary.repo.DiaryRepo
 
 class DiaryViewModel(private val diaryRepo: DiaryRepo) : ViewModel() {
+    init {
+        viewModelScope.launch {
+            val sharedPreferences = withContext(Dispatchers.IO){
+                ComposeDiaryApp.appContext.getSharedPreferences("diarySetting", Context.MODE_PRIVATE)
+            }
+            followSystemDarkMode = sharedPreferences.getBoolean("followSystemDarkMode", true)
+        }
+    }
+
     // 日记列表
     val diaryList: LiveData<List<Diary>> = diaryRepo.allDiary.asLiveData()
 
@@ -22,13 +34,15 @@ class DiaryViewModel(private val diaryRepo: DiaryRepo) : ViewModel() {
     // 当前正在编辑的日记
     var currentEditing by mutableStateOf(Diary(0, ""))
 
+    // 跟随系统暗色模式
+    var followSystemDarkMode by mutableStateOf(true)
+
     fun search(content: String) = viewModelScope.launch(Dispatchers.IO) {
         val result = diaryRepo.search("%$content%")
         withContext(Dispatchers.Main){
             _searchingResult.value = result
         }
     }
-
 
     fun insert(diary: Diary) = viewModelScope.launch(Dispatchers.IO) {
         diaryRepo.insertDiary(diary)
@@ -40,6 +54,13 @@ class DiaryViewModel(private val diaryRepo: DiaryRepo) : ViewModel() {
 
     fun delete(diary: Diary) = viewModelScope.launch(Dispatchers.IO) {
         diaryRepo.delete(diary)
+    }
+
+    fun updateSetting() = viewModelScope.launch(Dispatchers.IO) {
+        val sharedPreferences = ComposeDiaryApp.appContext.getSharedPreferences("diarySetting", Context.MODE_PRIVATE)
+        sharedPreferences.edit(commit = true){
+            putBoolean("followSystemDarkMode", followSystemDarkMode)
+        }
     }
 
     fun startEditing(id: Int) {

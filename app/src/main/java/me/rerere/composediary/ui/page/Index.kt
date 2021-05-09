@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -74,7 +75,7 @@ fun Index(navController: NavController, diaryViewModel: DiaryViewModel) {
 
         // Drawer
         drawerContent = {
-            Drawer(navController)
+            Drawer(navController, diaryViewModel)
         },
 
         // FAB, 用于新建日记
@@ -157,25 +158,36 @@ fun Index(navController: NavController, diaryViewModel: DiaryViewModel) {
 
 @ExperimentalMaterialApi
 @Composable
-fun Drawer(navController: NavController) {
-    Column {
+fun Drawer(navController: NavController, diaryViewModel: DiaryViewModel) {
+    ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+        val (header, items, bottom) = createRefs()
+
         // Header
         Surface(
             modifier =
             Modifier
                 .fillMaxWidth()
-                .height(130.dp),
+                .height(130.dp)
+                .constrainAs(header) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                },
             color = MaterialTheme.colors.secondary,
             elevation = 4.dp,
         ) {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Row {
-                    Box(modifier = Modifier.clip(CircleShape)){
-                        Image(painterResource(id = R.drawable.logo), "Jetpack Compose Logo", Modifier.size(90.dp))
+                    Box(modifier = Modifier.clip(CircleShape)) {
+                        Image(
+                            painterResource(id = R.drawable.logo),
+                            "Jetpack Compose Logo",
+                            Modifier.size(90.dp)
+                        )
                     }
                     Column(
                         Modifier
-                            .padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                            .padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
                         Text(text = "ComposeDiary", style = MaterialTheme.typography.h5)
                         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                             Text(text = "Based on Jetpack Compose™")
@@ -185,21 +197,50 @@ fun Drawer(navController: NavController) {
             }
         }
         // Items
-
         val context = LocalContext.current
-
-        //github
-        ListItem(icon = { Icon(Icons.Default.Source, "Source code")}, modifier = Modifier.clickable {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/jiangdashao/ComposeDiary"))
-            context.startActivity(intent)
-        }){
-            Text(text = "源代码")
+        Column(modifier = Modifier.constrainAs(items) {
+            top.linkTo(header.bottom)
+            start.linkTo(parent.start)
+        }) {
+            //github
+            ListItem(
+                icon = { Icon(Icons.Default.Source, "Source code") },
+                modifier = Modifier.clickable {
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://github.com/jiangdashao/ComposeDiary")
+                    )
+                    context.startActivity(intent)
+                }) {
+                Text(text = "源代码")
+            }
+            //about
+            ListItem(
+                icon = { Icon(Icons.Default.Info, "About the App") },
+                modifier = Modifier.clickable {
+                    navController.navigate("about")
+                }) {
+                Text(text = "关于")
+            }
         }
-        //about
-        ListItem(icon = { Icon(Icons.Default.Info, "About the App")}, modifier = Modifier.clickable {
-            navController.navigate("about")
-        }){
-            Text(text = "关于")
+
+        // Switch
+        Card(
+            modifier = Modifier
+                .constrainAs(bottom) {
+                    this.bottom.linkTo(parent.bottom)
+                    this.start.linkTo(parent.start)
+                }
+                .padding(16.dp)
+                .fillMaxWidth()
+        ) {
+            Row(Modifier.padding(16.dp)) {
+                Text(text = "跟随系统暗色模式")
+                Switch(checked = diaryViewModel.followSystemDarkMode, onCheckedChange = {
+                    diaryViewModel.followSystemDarkMode = it
+                    diaryViewModel.updateSetting()
+                })
+            }
         }
     }
 }
