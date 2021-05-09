@@ -1,21 +1,21 @@
-[English 🆎](README_EN.md)
+[Chinese 🈶](README_zh.md)
 
 # ComposeDiary
-基于Jetpack Compose开发的日记APP, 采用navigation库进行单activity实现
+A simple diary app build by Jetpack Compose, use navigation library for single activity implementation
 
-## 技术栈和功能
-* 纯 Jetpack Compose 构建界面
-* 支持 添加/删除/编辑/搜索 日记
-* MVVM架构
-* Kotlin 协程/Room/Navigation
-* 支持夜间模式(自动切换)
+## Tech Stack & Features
+* Pure Jetpack Compose UI
+* Support Add/Delete/Edit/Search diaries
+* MVVM Architecture
+* Kotlin Coroutine/Room/Navigation
+* Dark Mode
 
-## 截图
-| 主页面 | 侧边栏 |
+## Screenshots
+| MainPage | Drawer |
 | ----- | ------|
 | <img src="img/ss-1.png" align="left" height="400">| <img src="img/ss-2.png" align="left" height="400">|
 
 
 ## TODO List
-* 页面切换动画 (等待navigation库添加该功能)
-* 解决编辑页面的直接返回处理
+* Page Navigation Animation
+* Back handling in edit page
