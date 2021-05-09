@@ -9,7 +9,8 @@
 * 支持夜间模式(自动切换)
 
 ## 截图
-![](imgs/ss-1.png)
+<img src="img/ss-1.png" align="left" height="150">
+<img src="img/ss-2.png" align="left" height="150">
 
 ## TODO List
 * 添加多语言支持
