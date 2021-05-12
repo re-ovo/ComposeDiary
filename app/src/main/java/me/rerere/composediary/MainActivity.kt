@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
                     SideEffect {
                         systemUiController.apply {
                             // 设置导航栏
-                            // 必须先设置导航栏再设置状态栏，否则在某些系统上状态栏会显示白色icon :(
+                            // 必须先设置导航栏再设置状态栏，否则在某些系统上（MIUI?）状态栏会显示白色icon :(
                             setNavigationBarColor(
                                 color = systemColor,
                                 darkIcons = isLight

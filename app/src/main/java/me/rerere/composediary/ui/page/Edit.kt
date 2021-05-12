@@ -1,6 +1,7 @@
 package me.rerere.composediary.ui.page
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
@@ -28,7 +29,6 @@ fun EditPage(navController: NavController, diaryViewModel: DiaryViewModel) {
         date = state.date
     }
 
-
     // context
     val context = LocalContext.current
 
@@ -47,6 +47,19 @@ fun EditPage(navController: NavController, diaryViewModel: DiaryViewModel) {
         content = it
         state.content = content
     })
+
+    // BackHandler, Auto Save
+    BackHandler(content.isNotEmpty()) {
+        // save
+        if (content.isNotEmpty()){
+            state.content = content
+            diaryViewModel.update(state)
+            Toast.makeText(context, saved, Toast.LENGTH_SHORT).show()
+        }
+
+        // back
+        navController.popBackStack()
+    }
 }
 
 @Composable
